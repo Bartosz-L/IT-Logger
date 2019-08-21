@@ -29,24 +29,44 @@ export const getTechs = () => {
 };
 
 // add technician to db
-export const addTech = tech => {
+export const addTech = tech => async dispatch => {
+  try {
+    setLoading();
+
+    const res = await fetch('/techs', {
+      method: 'POST',
+      body: JSON.stringify(tech),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    const data = await res.json();
+
+    dispatch({
+      type: ADD_TECH,
+      payload: data
+    });
+  } catch (error) {
+    dispatch({
+      type: TECHS_ERROR,
+      payload: error.response.statusText
+    });
+  }
+};
+
+// delete technician from db
+export const deleteTech = id => {
   return async (dispatch, getState) => {
     try {
       setLoading();
 
-      const res = await fetch('/techs', {
-        method: 'POST',
-        body: JSON.stringify(),
-        headers: {
-          'Content-Type': 'application/json'
-        }
+      await fetch(`/techs/${id}`, {
+        method: 'DELETE'
       });
 
-      const data = await res.json();
-
       dispatch({
-        type: ADD_TECH,
-        payload: data
+        type: DELETE_TECH,
+        payload: id
       });
     } catch (error) {
       dispatch({

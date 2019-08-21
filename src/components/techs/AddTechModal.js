@@ -1,33 +1,25 @@
 import React, { useState } from 'react';
-import M from 'materialize-css/dist/js/materialize.min.js';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { addTech } from '../../actions/techActions';
+import M from 'materialize-css/dist/js/materialize.min.js';
 
 const AddTechModal = ({ addTech }) => {
   const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState();
+  const [lastName, setLastName] = useState('');
 
-  const handleChangeFirstName = e => {
-    setFirstName(e.target.value);
-  };
-
-  const handleChangeLastName = e => {
-    setLastName(e.target.value);
-  };
-
-  const handleSubmit = () => {
+  const handleOnSubmit = () => {
     if (firstName === '' || lastName === '') {
       M.toast({ html: 'Please enter the first and last name' });
     } else {
       addTech({
-        firstName: firstName,
-        lastName: lastName
+        firstName,
+        lastName
       });
 
-      M.toast({ html: `${firstName} ${lastName} was added as a Technician` });
+      M.toast({ html: `${firstName} ${lastName} was added as a tech` });
 
-      // clear fields
+      // Clear Fields
       setFirstName('');
       setLastName('');
     }
@@ -43,7 +35,7 @@ const AddTechModal = ({ addTech }) => {
               type="text"
               name="firstName"
               value={firstName}
-              onChange={handleChangeFirstName}
+              onChange={e => setFirstName(e.target.value)}
             />
             <label htmlFor="firstName" className="active">
               First Name
@@ -57,7 +49,7 @@ const AddTechModal = ({ addTech }) => {
               type="text"
               name="lastName"
               value={lastName}
-              onChange={handleChangeLastName}
+              onChange={e => setLastName(e.target.value)}
             />
             <label htmlFor="lastName" className="active">
               Last Name
@@ -68,7 +60,7 @@ const AddTechModal = ({ addTech }) => {
       <div className="modal-footer">
         <a
           href="#!"
-          onClick={handleSubmit}
+          onClick={handleOnSubmit}
           className="modal-close blue waves-effect waves-light btn-large"
           style={{ marginRight: '24px' }}
         >
