@@ -28,6 +28,35 @@ export const getTechs = () => {
   };
 };
 
+// add technician to db
+export const addTech = tech => {
+  return async (dispatch, getState) => {
+    try {
+      setLoading();
+
+      const res = await fetch('/techs', {
+        method: 'POST',
+        body: JSON.stringify(),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const data = await res.json();
+
+      dispatch({
+        type: ADD_TECH,
+        payload: data
+      });
+    } catch (error) {
+      dispatch({
+        type: TECHS_ERROR,
+        payload: error.response.statusText
+      });
+    }
+  };
+};
+
 // set loading to true
 export const setLoading = () => {
   return {
